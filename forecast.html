@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FORECAST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div id="container">
+        <br><br>
+
+
+        <div class="row">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+                <h1>CITY FORECAST</h1>
+                <br><br><br>
+                <form class="d-flex">
+                    <input id="input" placeholder="search your " type="text">
+                    <button type="button" class="ms-2 btn btn-primary" onclick="search()">search</button>
+                </form>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <div class="d-flex">
+                    <h4>Outputs: </h4>
+                    <h4 id="output"></h4>
+
+                </div>
+
+            </div>
+            <div class="col==lg-4"></div>
+
+        </div>
+
+    </div>
+
+</body>
+<script>
+    // search function
+    async function search() {
+        let v = input.value
+        if (v) {
+            const city = await fetch(` https://api.openweathermap.org/data/2.5/weather?q=${v}&appid=8ac5c4d57ba6a4b3dfcf622700447b1e `)
+            city.json().then((m) => {
+                  
+                  if(m.message){
+                    
+                    alert(m.message)
+                  }else{
+                    console.log(m);
+                    const sunrise=new Date((m.sys.sunrise+m.timezone)*1000)
+                    const sunset=new Date((m.sys.sunset+m.timezone)*1000)
+                    output.innerHTML=`
+                    
+                    <div class="card" style="width: 18rem;">
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">${m.name}</li>
+    <li class="list-group-item">${m.sys.country}</li>
+    <li class="list-group-item">${sunrise}</li>
+    <li class="list-group-item">${sunset}</li>
+    <li class="list-group-item">${m.weather[0].main} <img src="http://openweathermap.org/img/w/${m.weather[0].icon}.png" ></li>
+  </ul>
+</div>
+
+                    `
+
+                  }
+
+            }).catch((error)=>{
+                alert('site not working')
+            })
+                
+            
+        } else {
+            alert('plz type your city')
+        }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"></script>
+
+</html>
